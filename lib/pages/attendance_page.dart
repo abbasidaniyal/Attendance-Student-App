@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:scoped_model/scoped_model.dart';
 import '../scoped_models/student.dart';
+import './home_page.dart';
 
 class AttendancePage extends StatelessWidget {
   @override
@@ -22,16 +23,30 @@ class AttendancePage extends StatelessWidget {
                     child: Text(
                         "Mark Present for ${model.liveAttendanceSubject.subjectName}"),
                     onPressed: () {
-                      showDialog(
-                          context: context,
-                          builder: (context) {
-                            return AlertDialog(
-                              title: Text("Attendance"),
-                              content: Text("You have been marked present"),
-                            );
-                          });
-                          model.sendAttendance();
+                      model
+                          .sendAttendance(model.student.sID,
+                              model.liveAttendanceSubject.sID)
+                          .then((status) {
+                        if (status) {
+                          showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  title: Text("Attendance"),
+                                  content: Text("You have been marked present"),
+                                );
+                              });
+                        } else {
+                          Scaffold.of(context).showSnackBar(SnackBar(
+                            content: Text("Error"),
+                          ));
+                        }
+                      });
                       Navigator.pop(context);
+                      Navigator.pushReplacement(context,
+                          MaterialPageRoute(builder: (context) {
+                        return HomePage();
+                      }));
                     },
                   ),
                 )

@@ -73,13 +73,22 @@ class StudentModel extends Model {
     return isVerified;
   }
 
-  void sendAttendance() async {
+  Future<bool> sendAttendance(int studID,int subjID) async {
+    bool attendanceStatus=false;
     await http.post("http://13.233.160.117:8000/students/attendance}", body: {
       "Name": student.name,
       "Subject_Code": liveAttendanceSubject.sID.toString(),
       "Status": "P",
       "Date": DateTime.now().toString()
-    }).then((onValue) {});
+    }).then((res) {
+      if (res.statusCode==200) {
+        attendanceStatus=true;
+        notifyListeners();
+        
+      }
+
+    });
+    return attendanceStatus;
   }
 
   Future<bool> getAttendance(String sID) async {
