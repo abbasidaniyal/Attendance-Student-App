@@ -34,6 +34,18 @@ class AttendancePage extends StatelessWidget {
                                 return AlertDialog(
                                   title: Text("Attendance"),
                                   content: Text("You have been marked present"),
+                                  actions: <Widget>[
+                                    FlatButton(
+                                      child: Text("Continue"),
+                                      onPressed: () {
+                                        Navigator.pushReplacement(context,
+                                            MaterialPageRoute(
+                                                builder: (context) {
+                                          return HomePage();
+                                        }));   
+                                      },
+                                    )
+                                  ],
                                 );
                               });
                         } else {
@@ -42,11 +54,6 @@ class AttendancePage extends StatelessWidget {
                           ));
                         }
                       });
-                      Navigator.pop(context);
-                      Navigator.pushReplacement(context,
-                          MaterialPageRoute(builder: (context) {
-                        return HomePage();
-                      }));
                     },
                   ),
                 )
